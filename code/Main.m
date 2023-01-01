@@ -1,18 +1,8 @@
-%% user inputs
-alpha = 15 * pi / 180; %wind angle (radians)
-S_F = 710000;%fiber strength
-Pr = 1000;%pressure
-N = 2; %safety factor
-D = 8; %diameter
-w = .25; %filament width
-th = .004;%filament thickness
-r_0 = 1;%starting radius
-n_pts = 30; %number of points
+function [] = Main(alpha,S_F,Pr,N,D,w,th,r_0,n_pts,cyl_Length)
 R = D/2; %Radius 
 polar_alpha = asin(r_0 / R); %see figure 1
 
 P = 2*D / tan(alpha); % (6) pitch
-cyl_Length = 12;
 revolutions = cyl_Length / P; % (7)
 rad_revolutions = revolutions * 2 * pi; % (8)
 deg_revolutions = revolutions * 360; %degrees that the cylinder rotates in helical portion
@@ -30,12 +20,12 @@ num_cycles = find_cycles(deg_revolutions, 2);
 %rotate right hemispherical endcap by one helical revolution (forward)
 phi_diff = deg_revolutions;
 Rotate = rotx(phi_diff);
-right_rot = mtimes(Rotate, right);
+right_rot = Rotate*right;
 
 %rotate left hemispherical endcap by two helical revolutions (forward and
 %backwards)
 Rotate2 = rotx(2*deg_revolutions);
-left_rot = mtimes(Rotate2, left);
+left_rot = Rotate2*left;
 left_end = [left_rot(1,n_pts+1:end); left_rot(2,n_pts+1:end); left_rot(3,n_pts+1:end)];
 
 circuit = [left_start, forward, right_rot, backwards, left_end];
