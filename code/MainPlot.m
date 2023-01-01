@@ -11,8 +11,7 @@ n = (2*deg_revolutions) / 360; %calculates how many full revolutions gone in the
 start = 2*deg_revolutions - 360*(floor(n));
 
 [left, right] = polarWind(R, polar_alpha, cyl_Length, n_pts);
-left=real(left);
-right=real(right);
+
 [forward, backwards, starts] = helicalWind(R, cyl_Length, alpha, n_pts);
 left_start = [left(1,1:n_pts); left(2,1:n_pts); left(3,1:n_pts)];
 

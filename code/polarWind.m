@@ -51,4 +51,6 @@ x_right_back = fliplr(x_right);
 right = [x_right, x_right_back; 
          y_right, y_right_back;
          z_right, z_right_back];
+left=real(left);
+right=real(right);
 end
