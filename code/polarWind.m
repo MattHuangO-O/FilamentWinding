@@ -2,14 +2,14 @@ function [left, right] = polarWind(R, polar_alpha, cyl_Length, n_pts)
 l_0 = R*cos(polar_alpha); %(-2)
 x_0 = R - l_0; % (-1)
 
-x_left = linspace(x_0, l_0, n_pts); % (0)
+x_left = linspace(x_0, R, n_pts); % (0)
 y_left = zeros(1, n_pts); 
 z_left = zeros(1, n_pts);
 phi_left = zeros(1, n_pts);
 
 %Left polar winding
 for i = 1:n_pts %plotting points for the left hemispherical end cap
-    l = l_0 - x_left(i); % (1)
+    l = R - x_left(i); % (1)
     y_left(i) = l * tan(polar_alpha); % (2)
     r_xy = sqrt(l^2 + y_left(i)); % (3)
     z_left(i) = sqrt(R^2 - r_xy^2); % (4)
