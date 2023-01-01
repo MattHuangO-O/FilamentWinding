@@ -2,7 +2,8 @@ function [layer] = layer_Generator(w, R, cycle, num_cycles)
 offset = w / R * 180 / pi; %width angle
 start = 360 / num_cycles; 
 
-n = floor(start / offset);
+n = ceil(start / offset);
+offset = start / n;
 L = length(cycle);
 
 layer = zeros(3,n*L);

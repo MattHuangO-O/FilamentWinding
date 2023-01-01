@@ -11,7 +11,7 @@ n_pts = 30; %number of points
 R = D/2; %Radius 
 polar_alpha = asin(r_0 / R); %see figure 1
 
-P = 2*D / tan(alpha); % (6)
+P = 2*D / tan(alpha); % (6) pitch
 cyl_Length = 12;
 revolutions = cyl_Length / P; % (7)
 rad_revolutions = revolutions * 2 * pi; % (8)
