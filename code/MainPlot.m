@@ -1,4 +1,4 @@
-function [] = MainPlot(alpha,S_F,Pr,N,D,w,th,r_0,n_pts,cyl_Length,compl)
+function [xmesh_cir,ymesh_cir,zmesh_cir,xmesh_cyc,ymesh_cyc,zmesh_cyc,xmesh_full,ymesh_full,zmesh_full] = MainPlot(alpha,S_F,Pr,N,D,w,th,r_0,n_pts,cyl_Length,compl)
 R = D/2; %Radius 
 polar_alpha = asin(r_0 / R); %see figure 1
 
@@ -11,6 +11,8 @@ n = (2*deg_revolutions) / 360; %calculates how many full revolutions gone in the
 start = 2*deg_revolutions - 360*(floor(n));
 
 [left, right] = polarWind(R, polar_alpha, cyl_Length, n_pts);
+left=real(left);
+right=real(right);
 [forward, backwards, starts] = helicalWind(R, cyl_Length, alpha, n_pts);
 left_start = [left(1,1:n_pts); left(2,1:n_pts); left(3,1:n_pts)];
 
@@ -27,9 +29,12 @@ right_rot = Rotate*right;
 Rotate2 = rotx(2*deg_revolutions);
 left_rot = Rotate2*left;
 left_end = [left_rot(1,n_pts+1:end); left_rot(2,n_pts+1:end); left_rot(3,n_pts+1:end)];
-%%
+
 circuit = [left_start, forward, right_rot, backwards, left_end];
 phi = calculate_Mandrel_angle(circuit(2,:), circuit(3,:));
+cycle = cycle_Generator(num_cycles, deg_revolutions, circuit, n_pts); %g-code for one cycle
+full_layer = layer_Generator(w, R, cycle, num_cycles); %g-code for full layer
+%%
 
 [Th_circuit,R_circuit]=cart2pol(circuit(2,:),circuit(3,:));
 
@@ -47,7 +52,7 @@ x_meshcir=[circuit(1,:);circuit(1,:)];
 y_meshcir=[yL_circuit;yR_circuit];
 z_meshcir=[zL_circuit;zR_circuit];
 %%
-cycle = cycle_Generator(num_cycles, deg_revolutions, circuit, n_pts); %g-code for one cycle
+
 
 [Th_cycle,R_cycle]=cart2pol(cycle(2,:),cycle(3,:));
 
@@ -65,7 +70,7 @@ x_meshcyc=[cycle(1,:);cycle(1,:)];
 y_meshcyc=[yL_cycle;yR_cycle];
 z_meshcyc=[zL_cycle;zR_cycle];
 %%
-full_layer = layer_Generator(w, R, cycle, num_cycles); %g-code for full layer
+
 
 [Th_full,R_full]=cart2pol(full_layer(2,:),full_layer(3,:));
 
@@ -108,7 +113,7 @@ axis('equal')
 
 figure
 %surf(x_meshfull,y_meshfull,z_meshfull)
-layern=length(full_layer)*compl;
+layern=ceil(length(full_layer)*compl);
 surf(x_meshfull(:,1:layern),y_meshfull(:,1:layern),z_meshfull(:,1:layern))
 axis('equal')
 
