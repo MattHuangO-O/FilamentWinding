@@ -47,9 +47,13 @@ yL_circuit=R_circuit.*cos(ThL_circuit);
 zL_circuit=R_circuit.*sin(ThL_circuit);
 circuitL=[circuit(1,:);yL_circuit;zL_circuit];
 
+
 x_meshcir=[circuit(1,:);circuit(1,:)];
 y_meshcir=[yL_circuit;yR_circuit];
 z_meshcir=[zL_circuit;zR_circuit];
+colorcir(:,:,1)=[linspace(1,0,length(x_meshcir(1,:)));linspace(1,255,length(x_meshcir(1,:)))];
+colorcir(:,:,2)=[linspace(0,1,length(x_meshcir(1,:)));linspace(1,255,length(x_meshcir(1,:)))];
+colorcir(:,:,3)=[linspace(0,0,length(x_meshcir(1,:)));linspace(1,255,length(x_meshcir(1,:)))];
 %%
 
 
@@ -68,6 +72,10 @@ cycleL=[cycle(1,:);yL_cycle;zL_cycle];
 x_meshcyc=[cycle(1,:);cycle(1,:)];
 y_meshcyc=[yL_cycle;yR_cycle];
 z_meshcyc=[zL_cycle;zR_cycle];
+
+colorcyc(:,:,1)=[linspace(1,0,length(x_meshcyc(1,:)));linspace(1,255,length(x_meshcyc(1,:)))];
+colorcyc(:,:,2)=[linspace(0,1,length(x_meshcyc(1,:)));linspace(1,255,length(x_meshcyc(1,:)))];
+colorcyc(:,:,3)=[linspace(0,0,length(x_meshcyc(1,:)));linspace(1,255,length(x_meshcyc(1,:)))];
 %%
 
 
@@ -87,9 +95,12 @@ x_meshfull=[full_layer(1,:);full_layer(1,:)];
 y_meshfull=[yL_full;yR_full];
 z_meshfull=[zL_full;zR_full];
 
+colorfull(:,:,1)=[linspace(1,0,length(x_meshfull(1,:)));linspace(1,255,length(x_meshfull(1,:)))];
+colorfull(:,:,2)=[linspace(0,1,length(x_meshfull(1,:)));linspace(1,255,length(x_meshfull(1,:)))];
+colorfull(:,:,3)=[linspace(0,0,length(x_meshfull(1,:)));linspace(1,255,length(x_meshfull(1,:)))];
 %%
 figure 
-surf(x_meshcir,y_meshcir,z_meshcir)
+surf(x_meshcir,y_meshcir,z_meshcir,colorcir)
 axis('equal')
 
 figure
@@ -100,7 +111,7 @@ plot3(circuit(1,:), circuit(2,:), circuit(3,:));
 axis('equal')
 
 figure
-surf(x_meshcyc,y_meshcyc,z_meshcyc)
+surf(x_meshcyc,y_meshcyc,z_meshcyc,colorcyc)
 axis('equal')
 
 figure
@@ -111,9 +122,9 @@ axis('equal')
 %animate(cycle)
 
 figure
-%surf(x_meshfull,y_meshfull,z_meshfull)
+
 layern=ceil(length(full_layer)*compl);
-surf(x_meshfull(:,1:layern),y_meshfull(:,1:layern),z_meshfull(:,1:layern))
+surf(x_meshfull(:,1:layern),y_meshfull(:,1:layern),z_meshfull(:,1:layern),colorfull(:,1:layern,:))
 axis('equal')
 
 figure

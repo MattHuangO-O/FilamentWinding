@@ -1,5 +1,5 @@
 %% user inputs
-alpha = 10 * pi / 180; %wind angle (radians)
+alpha = 15 * pi / 180; %wind angle (radians)
 S_F = 710000; %fiber strength
 Pr = 1000; %pressure
 N = 2; %safety factor
@@ -12,5 +12,5 @@ r_0=sin(alpha)*D/2;%starting radius calculated from wind angle
 %angle
 n_pts = 60; %number of points
 cyl_Length = 10; %Length of cylindrical section
-compl=0.96;%Layer completion percentage
+compl=1;%Layer completion percentage
 MainPlot(alpha,S_F,Pr,N,D,w,th,r_0,n_pts,cyl_Length,compl)
