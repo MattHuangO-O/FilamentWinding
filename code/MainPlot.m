@@ -18,21 +18,26 @@ num_cycles = find_cycles(deg_revolutions, 2);
 %phi = calculate_Mandrel_angle(circuit(2,:), circuit(3,:));
 
 circuit = circuit_Generator(left, forward, right, backwards, deg_revolutions, n_pts);
+circuit_inc = increase(circuit);
+
 cycle = cycle_Generator(num_cycles, deg_revolutions, circuit, n_pts); %g-code for one cycle
+cycle_inc = increase(cycle);
+
 full_layer = layer_Generator(w, R, cycle, num_cycles); %g-code for full layer
+full_layer_inc = increase(full_layer);
 %% surface pliot circuit
 
-[Th_circuit,R_circuit]=cart2pol(circuit(2,:),circuit(3,:));
+[Th_circuit,R_circuit]=cart2pol(circuit_inc(2,:),circuit_inc(3,:));
 
 ThR_circuit=Th_circuit+w./R_circuit;
 yR_circuit=R_circuit.*cos(ThR_circuit);
 zR_circuit=R_circuit.*sin(ThR_circuit);
-circuitR=[circuit(1,:);yR_circuit;zR_circuit];
+circuitR=[circuit_inc(1,:);yR_circuit;zR_circuit];
 
 ThL_circuit=Th_circuit-w./R_circuit;
 yL_circuit=R_circuit.*cos(ThL_circuit);
 zL_circuit=R_circuit.*sin(ThL_circuit);
-circuitL=[circuit(1,:);yL_circuit;zL_circuit];
+circuitL=[circuit_inc(1,:);yL_circuit;zL_circuit];
 
 
 x_meshcir=[circuit(1,:);circuit(1,:)];
@@ -42,7 +47,7 @@ colorcir(:,:,1)=[linspace(1,0,length(x_meshcir(1,:)));linspace(1,255,length(x_me
 colorcir(:,:,2)=[linspace(0,1,length(x_meshcir(1,:)));linspace(1,255,length(x_meshcir(1,:)))];
 colorcir(:,:,3)=[linspace(0,0,length(x_meshcir(1,:)));linspace(1,255,length(x_meshcir(1,:)))];
 %% surface plot cycle
-[Th_cycle,R_cycle]=cart2pol(cycle(2,:),cycle(3,:));
+[Th_cycle,R_cycle]=cart2pol(cycle_inc(2,:),cycle_inc(3,:));
 
 ThR_cycle=Th_cycle+w./R_cycle;
 yR_cycle=R_cycle.*cos(ThR_cycle); %right surface
@@ -62,7 +67,7 @@ colorcyc(:,:,1)=[linspace(1,0,length(x_meshcyc(1,:)));linspace(1,255,length(x_me
 colorcyc(:,:,2)=[linspace(0,1,length(x_meshcyc(1,:)));linspace(1,255,length(x_meshcyc(1,:)))];
 colorcyc(:,:,3)=[linspace(0,0,length(x_meshcyc(1,:)));linspace(1,255,length(x_meshcyc(1,:)))];
 %%
-[Th_full,R_full]=cart2pol(full_layer(2,:),full_layer(3,:));
+[Th_full,R_full]=cart2pol(full_layer_inc(2,:),full_layer_inc(3,:));
 
 ThR_full=Th_full+w./R_full;
 yR_full=R_full.*cos(ThR_full);
