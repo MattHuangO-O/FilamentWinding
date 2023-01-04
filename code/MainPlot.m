@@ -1,4 +1,8 @@
 function [xmesh_cir,ymesh_cir,zmesh_cir,xmesh_cyc,ymesh_cyc,zmesh_cyc,xmesh_full,ymesh_full,zmesh_full] = MainPlot(alpha,S_F,Pr,N,D,w,th,r_0,n_pts,cyl_Length,compl)
+Red=[0,1];
+Green=[1,0];
+Blue=[0.1,0.1];
+
 R = D/2; %Radius 
 polar_alpha = asin(r_0 / R); %see figure 1
 
@@ -43,9 +47,8 @@ circuitL=[circuit(1,:);yL_circuit;zL_circuit];
 x_meshcir=[circuit(1,:);circuit(1,:)];
 y_meshcir=[yL_circuit;yR_circuit];
 z_meshcir=[zL_circuit;zR_circuit];
-colorcir(:,:,1)=[linspace(1,0,length(x_meshcir(1,:)));linspace(1,255,length(x_meshcir(1,:)))];
-colorcir(:,:,2)=[linspace(0,1,length(x_meshcir(1,:)));linspace(1,255,length(x_meshcir(1,:)))];
-colorcir(:,:,3)=[linspace(0,0,length(x_meshcir(1,:)));linspace(1,255,length(x_meshcir(1,:)))];
+
+colorcir=meshcolor(length(x_meshcir));
 %% surface plot cycle
 [Th_cycle,R_cycle]=cart2pol(cycle(2,:),cycle(3,:));
 
@@ -63,9 +66,7 @@ x_meshcyc=[cycle(1,:);cycle(1,:)];
 y_meshcyc=[yL_cycle;yR_cycle];
 z_meshcyc=[zL_cycle;zR_cycle];
 
-colorcyc(:,:,1)=[linspace(1,0,length(x_meshcyc(1,:)));linspace(1,255,length(x_meshcyc(1,:)))];
-colorcyc(:,:,2)=[linspace(0,1,length(x_meshcyc(1,:)));linspace(1,255,length(x_meshcyc(1,:)))];
-colorcyc(:,:,3)=[linspace(0,0,length(x_meshcyc(1,:)));linspace(1,255,length(x_meshcyc(1,:)))];
+colorcyc=meshcolor(length(x_meshcyc));
 %%
 [Th_full,R_full]=cart2pol(full_layer(2,:),full_layer(3,:));
 
@@ -83,17 +84,15 @@ x_meshfull=[full_layer(1,:);full_layer(1,:)];
 y_meshfull=[yL_full;yR_full];
 z_meshfull=[zL_full;zR_full];
 
-colorfull(:,:,1)=[linspace(1,0,length(x_meshfull(1,:)));linspace(1,255,length(x_meshfull(1,:)))];
-colorfull(:,:,2)=[linspace(0,1,length(x_meshfull(1,:)));linspace(1,255,length(x_meshfull(1,:)))];
-colorfull(:,:,3)=[linspace(0,0,length(x_meshfull(1,:)));linspace(1,255,length(x_meshfull(1,:)))];
+colorfull=meshcolor(length(x_meshfull));
 %%
 figure 
 hold all
-s1 = surf(x_meshcir,y_meshcir,z_meshcir);
+s1 = surf(x_meshcir,y_meshcir,z_meshcir,colorcir);
 plot3(circuit(1,:), yR_circuit, zR_circuit, 'k','LineWidth',0.5);
 plot3(circuit(1,:), yL_circuit, zL_circuit, 'k','LineWidth',0.5);
 axis('equal')
-set(s1,'FaceColor',[1 0 0],'EdgeColor','none')
+set(s1,'EdgeColor','none')
 hold off
 
 figure
@@ -109,7 +108,7 @@ hold all
 s2 = surf(x_meshcyc,y_meshcyc,z_meshcyc,colorcyc); %surface
 plot3(cycleR(1,:), cycleR(2,:), cycleR(3,:), 'k','LineWidth',0.5); %out line
 plot3(cycleL(1,:), cycleL(2,:), cycleL(3,:), 'k','LineWidth',0.5);
-set(s2,'FaceColor',[1 0 0],'EdgeColor','none')
+set(s2,'EdgeColor','none')
 axis('equal')
 hold off
 
@@ -126,7 +125,7 @@ layern=ceil(length(full_layer)*compl);
 s3 = surf(x_meshfull(:,1:layern),y_meshfull(:,1:layern),z_meshfull(:,1:layern),colorfull(:,1:layern,:));
 plot3(fullR(1,:), fullR(2,:), fullR(3,:), 'k','LineWidth',0.1); %out line
 plot3(fullL(1,:), fullL(2,:), fullL(3,:), 'k','LineWidth',0.1);
-set(s3,'FaceColor',[1 0 0],'EdgeColor','none')
+set(s3,'EdgeColor','none')
 axis('equal')
 hold off
 
