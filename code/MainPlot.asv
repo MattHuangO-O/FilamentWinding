@@ -116,11 +116,11 @@ axis('equal')
 %animate(cycle)
 
 figure
-hold all
+
 layern=ceil(length(full_layer)*compl);
 s3 = surf(x_meshfull(:,1:layern),y_meshfull(:,1:layern),z_meshfull(:,1:layern),colorfull(:,1:layern,:));
 plot3(fullR(1,:), fullR(2,:), fullR(3,:), 'b'); %out line
-plot3(fullL(1,:), fullL(2,:), fullL(3,:), 'b');
+plot3(cycleL(1,:), cycleL(2,:), cycleL(3,:), 'b');
 set(s3,'FaceColor',[1 0 0],'EdgeColor','none')
 axis('equal')
 hold off

@@ -13,7 +13,6 @@ for i = 1:n_pts %plotting points for the left hemispherical end cap
     y_left(i) = l * tan(polar_alpha); % (2)
     r_xy = sqrt(l^2 + y_left(i)); % (3)
     z_left(i) = sqrt(R^2 - r_xy^2); % (4)
-    %phi_left(i) = asin(z_left(i)/R); % (5)
     phi_left(i) = atan(z_left(i)/y_left(i)); % (5)
 end
 
@@ -31,8 +30,7 @@ x_start = R + cyl_Length; % (14)
 x_right = linspace(x_start, x_start + l_0, n_pts); % (15)
 y_right = zeros(1,n_pts); 
 z_right = fliplr(z_left); %z right is just z left but flipper
-%phi_right = phi_cyl(end) + phi_left;
-%phi_right = zeros(1,n_pts);
+
 l = zeros(1,n_pts);
 r_xy = zeros(1,n_pts);
 
@@ -40,8 +38,6 @@ for i = 1:n_pts %plotting points for the right hemispherical end cap
     l(i) = x_right(i) - x_start; % (15)
     y_right(i) = -l(i) * tan(polar_alpha); % (16)
     r_xy(i) = sqrt(l(i)^2 + y_right(i)^2); % (3) 
-    %z_right(i) = sqrt(R^2 - r_xy(i)^2); % (17)
-    %phi_right(i) = atan(z_right(i)/y_right(i))*180/pi; % (18)
 end
 
 z_right_back = fliplr(z_right .* -1);
@@ -51,6 +47,8 @@ x_right_back = fliplr(x_right);
 right = [x_right, x_right_back; 
          y_right, y_right_back;
          z_right, z_right_back];
+
 left=real(left);
 right=real(right);
+
 end

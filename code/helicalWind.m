@@ -1,4 +1,4 @@
-function [forward, backward, starts] = helicalWind(R, cyl_Length, alpha, n_pts)
+function [forward, backward] = helicalWind(R, cyl_Length, alpha, n_pts)
 D = 2*R;
 P = 2*D / tan(alpha); % (6)
 revolutions = cyl_Length / P; % (7)
