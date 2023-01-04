@@ -1,4 +1,4 @@
-function [layer] = layer_Generator(w, R, cycle, num_cycles)
+function [layer,n] = layer_Generator(w, R, cycle, num_cycles)
 offset = w / R * 180 / pi; %width angle
 start = 360 / num_cycles; 
 

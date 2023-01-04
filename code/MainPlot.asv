@@ -17,27 +17,27 @@ num_cycles = find_cycles(deg_revolutions, 2);
 
 %phi = calculate_Mandrel_angle(circuit(2,:), circuit(3,:));
 
-circuit = circuit_Generator(left, forward, right, backwards, deg_revolutions, n_pts);
-circuit_inc = increase(circuit);
+circuit_g = circuit_Generator(left, forward, right, backwards, deg_revolutions, n_pts);
+circuit=circuit_g;
 
-cycle = cycle_Generator(num_cycles, deg_revolutions, circuit, n_pts); %g-code for one cycle
-cycle_inc = increase(cycle);
+cycle_g = cycle_Generator(num_cycles, deg_revolutions, circuit_g, n_pts); %g-code for one cycle
+cycle=increase(cycle_g,num_cycles*t);
 
-full_layer = layer_Generator(w, R, cycle, num_cycles); %g-code for full layer
-full_layer_inc = increase(full_layer);
+(full_layer_g,num_full) = layer_Generator(w, R, cycle_g, num_cycles); %g-code for full layer
+full_layer=increase(full_layer_g,num_cycles*t);
 %% surface pliot circuit
 
-[Th_circuit,R_circuit]=cart2pol(circuit_inc(2,:),circuit_inc(3,:));
+[Th_circuit,R_circuit]=cart2pol(circuit(2,:),circuit(3,:));
 
 ThR_circuit=Th_circuit+w./R_circuit;
 yR_circuit=R_circuit.*cos(ThR_circuit);
 zR_circuit=R_circuit.*sin(ThR_circuit);
-circuitR=[circuit_inc(1,:);yR_circuit;zR_circuit];
+circuitR=[circuit(1,:);yR_circuit;zR_circuit];
 
 ThL_circuit=Th_circuit-w./R_circuit;
 yL_circuit=R_circuit.*cos(ThL_circuit);
 zL_circuit=R_circuit.*sin(ThL_circuit);
-circuitL=[circuit_inc(1,:);yL_circuit;zL_circuit];
+circuitL=[circuit(1,:);yL_circuit;zL_circuit];
 
 
 x_meshcir=[circuit(1,:);circuit(1,:)];
@@ -90,8 +90,8 @@ colorfull(:,:,3)=[linspace(0,0,length(x_meshfull(1,:)));linspace(1,255,length(x_
 figure 
 hold all
 s1 = surf(x_meshcir,y_meshcir,z_meshcir);
-plot3(circuit(1,:), yR_circuit, zR_circuit, 'b');
-plot3(circuit(1,:), yL_circuit, zL_circuit, 'b');
+plot3(circuit(1,:), yR_circuit, zR_circuit, 'k','LineWidth',0.5);
+plot3(circuit(1,:), yL_circuit, zL_circuit, 'k','LineWidth',0.5);
 axis('equal')
 set(s1,'FaceColor',[1 0 0],'EdgeColor','none')
 hold off
@@ -107,8 +107,8 @@ figure
 hold all
 
 s2 = surf(x_meshcyc,y_meshcyc,z_meshcyc,colorcyc); %surface
-plot3(cycleR(1,:), cycleR(2,:), cycleR(3,:), 'b'); %out line
-plot3(cycleL(1,:), cycleL(2,:), cycleL(3,:), 'b');
+plot3(cycleR(1,:), cycleR(2,:), cycleR(3,:), 'k','LineWidth',0.5); %out line
+plot3(cycleL(1,:), cycleL(2,:), cycleL(3,:), 'k','LineWidth',0.5);
 set(s2,'FaceColor',[1 0 0],'EdgeColor','none')
 axis('equal')
 hold off
@@ -124,8 +124,8 @@ figure
 hold all
 layern=ceil(length(full_layer)*compl);
 s3 = surf(x_meshfull(:,1:layern),y_meshfull(:,1:layern),z_meshfull(:,1:layern),colorfull(:,1:layern,:));
-plot3(fullR(1,:), fullR(2,:), fullR(3,:), 'b'); %out line
-plot3(fullL(1,:), fullL(2,:), fullL(3,:), 'b');
+plot3(fullR(1,:), fullR(2,:), fullR(3,:), 'k','LineWidth',0.5); %out line
+plot3(fullL(1,:), fullL(2,:), fullL(3,:), 'k','LineWidth',0.5);
 set(s3,'FaceColor',[1 0 0],'EdgeColor','none')
 axis('equal')
 hold off
