@@ -21,7 +21,7 @@ num_cycles = find_cycles(deg_revolutions, 2);
 
 %phi = calculate_Mandrel_angle(circuit(2,:), circuit(3,:));
 
-circuit_g = circuit_Generator(left, forward, right, backwards, deg_revolutions, n_pts);
+circuit_g = circuit_Generator(left, forward, right, backwards, deg_revolutions, n_pts); %g-code for one circuit
 circuit=increase(circuit_g,th*10);
 
 cycle_g = cycle_Generator(num_cycles, deg_revolutions, circuit_g, n_pts); %g-code for one cycle
@@ -29,6 +29,18 @@ cycle=increase(cycle_g,num_cycles*th*10);
 
 [full_layer_g,num_full] = layer_Generator(w, R, cycle_g, num_cycles); %g-code for full layer
 full_layer=increase(full_layer_g,num_full*th*10);
+
+%{
+TESTING WRITING TO TXT FILE AND GETTING MOTOR COORDINATES
+[g_phi, g_y] = calculate_Mandrel_angle(full_layer_g(2,:), full_layer_g(3,:));
+g_x = full_layer_g(1,:);
+g = [g_x; g_y; g_phi]';
+writematrix(g,'myData.dat','Delimiter','\t')  
+axis('equal');
+%}
+
+
+
 %% surface pliot circuit
 
 [Th_circuit,R_circuit]=cart2pol(circuit(2,:),circuit(3,:));
