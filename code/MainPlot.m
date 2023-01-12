@@ -30,14 +30,14 @@ cycle=increase(cycle_g,num_cycles*th*10);
 [full_layer_g,num_full] = layer_Generator(w, R, cycle_g, num_cycles); %g-code for full layer
 full_layer=increase(full_layer_g,num_full*th*10);
 
-%{
-TESTING WRITING TO TXT FILE AND GETTING MOTOR COORDINATES
+
+%TESTING WRITING TO TXT FILE AND GETTING MOTOR COORDINATES
 [g_phi, g_y] = calculate_Mandrel_angle(full_layer_g(2,:), full_layer_g(3,:));
 g_x = full_layer_g(1,:);
 g = [g_x; g_y; g_phi]';
 writematrix(g,'myData.dat','Delimiter','\t')  
 axis('equal');
-%}
+
 
 
 
