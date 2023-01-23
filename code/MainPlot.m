@@ -41,7 +41,7 @@ axis('equal');
 
 
 
-%% surface pliot circuit
+%% surface plot circuit
 
 [Th_circuit,R_circuit]=cart2pol(circuit(2,:),circuit(3,:));
 
