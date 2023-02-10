@@ -35,9 +35,22 @@ full_layer=increase(full_layer_g,num_full*th*10);
 [g_phi, g_y] = calculate_Mandrel_angle(full_layer_g(2,:), full_layer_g(3,:));
 g_x = full_layer_g(1,:);
 g = [g_x; g_y; g_phi]';
-writematrix(g,'myData.dat','Delimiter','\t')  
-axis('equal');
+%writematrix(g,'myData.txt','Delimiter','\t')  
 
+%writing to file
+filename = 'dat.txt';
+
+fileID = fopen(filename,'w');
+
+writelines('G90', filename,WriteMode="append");
+zero = ['G00', '    ', 'X', num2str(0), '   ', 'Y', num2str(0), '  ', 'Z', num2str(0)];
+writelines(zero, filename, WriteMode = "append");
+
+for k = 1: length(g_x)
+    lines = ['G01 ','X', num2str(g_x(k)), '   ', 'Y', num2str(g_y(k)), '  ', 'Z', num2str(g_phi(k))];
+    writelines(lines,filename,WriteMode="append")
+end
+fclose(fileID);
 
 
 

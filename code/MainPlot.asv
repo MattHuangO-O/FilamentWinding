@@ -1,6 +1,8 @@
 function [xmesh_cir,ymesh_cir,zmesh_cir,xmesh_cyc,ymesh_cyc,zmesh_cyc,xmesh_full,ymesh_full,zmesh_full] = MainPlot(alpha,S_F,Pr,N,D,w,th,r_0,n_pts,cyl_Length,compl)
-Red1=1;
-Red
+Red=[0,1];
+Green=[1,0];
+Blue=[0.1,0.1];
+
 R = D/2; %Radius 
 polar_alpha = asin(r_0 / R); %see figure 1
 
@@ -19,7 +21,7 @@ num_cycles = find_cycles(deg_revolutions, 2);
 
 %phi = calculate_Mandrel_angle(circuit(2,:), circuit(3,:));
 
-circuit_g = circuit_Generator(left, forward, right, backwards, deg_revolutions, n_pts);
+circuit_g = circuit_Generator(left, forward, right, backwards, deg_revolutions, n_pts); %g-code for one circuit
 circuit=increase(circuit_g,th*10);
 
 cycle_g = cycle_Generator(num_cycles, deg_revolutions, circuit_g, n_pts); %g-code for one cycle
@@ -27,7 +29,32 @@ cycle=increase(cycle_g,num_cycles*th*10);
 
 [full_layer_g,num_full] = layer_Generator(w, R, cycle_g, num_cycles); %g-code for full layer
 full_layer=increase(full_layer_g,num_full*th*10);
-%% surface pliot circuit
+
+
+%TESTING WRITING TO TXT FILE AND GETTING MOTOR COORDINATES
+[g_phi, g_y] = calculate_Mandrel_angle(full_layer_g(2,:), full_layer_g(3,:));
+g_x = full_layer_g(1,:);
+g = [g_x; g_y; g_phi]';
+%writematrix(g,'myData.txt','Delimiter','\t')  
+
+%writing to file
+filename = 'dat.txt';
+
+fileID = fopen(filename,'w');
+
+writelines('G90', filename,WriteMode="append");
+zero = ['G00', '    ', 'X', num2str(0), '   ', 'Y', num2str(0), '  ', 'Z', num2str(0)];
+writelines(zero, filename, WriteMode = "append");
+
+for k = 1: length(g_x)
+    lines = ['G01 ','X', num2str(g_x(k)), '   ', 'Y', num2str(g_y(k)), '  ', 'Z', num2str(g_phi(k))];
+    writelines(lines,filename,WriteMode="append")
+end
+fclose(fileID);
+
+
+
+%% surface plot circuit
 
 [Th_circuit,R_circuit]=cart2pol(circuit(2,:),circuit(3,:));
 
@@ -45,9 +72,8 @@ circuitL=[circuit(1,:);yL_circuit;zL_circuit];
 x_meshcir=[circuit(1,:);circuit(1,:)];
 y_meshcir=[yL_circuit;yR_circuit];
 z_meshcir=[zL_circuit;zR_circuit];
-colorcir(:,:,1)=[linspace(0,1,length(x_meshcir(1,:)));linspace(0,1,length(x_meshcir(1,:)))];
-colorcir(:,:,2)=[linspace(1,0,length(x_meshcir(1,:)));linspace(1,0,length(x_meshcir(1,:)))];
-colorcir(:,:,3)=[linspace(0,0,length(x_meshcir(1,:)));linspace(0,0,length(x_meshcir(1,:)))];
+
+colorcir=meshcolor(length(x_meshcir));
 %% surface plot cycle
 [Th_cycle,R_cycle]=cart2pol(cycle(2,:),cycle(3,:));
 
@@ -65,9 +91,7 @@ x_meshcyc=[cycle(1,:);cycle(1,:)];
 y_meshcyc=[yL_cycle;yR_cycle];
 z_meshcyc=[zL_cycle;zR_cycle];
 
-colorcyc(:,:,1)=[linspace(0,1,length(x_meshcyc(1,:)));linspace(0,1,length(x_meshcyc(1,:)))];
-colorcyc(:,:,2)=[linspace(1,0,length(x_meshcyc(1,:)));linspace(1,0,length(x_meshcyc(1,:)))];
-colorcyc(:,:,3)=[linspace(0,0,length(x_meshcyc(1,:)));linspace(0,0,length(x_meshcyc(1,:)))];
+colorcyc=meshcolor(length(x_meshcyc));
 %%
 [Th_full,R_full]=cart2pol(full_layer(2,:),full_layer(3,:));
 
@@ -85,9 +109,7 @@ x_meshfull=[full_layer(1,:);full_layer(1,:)];
 y_meshfull=[yL_full;yR_full];
 z_meshfull=[zL_full;zR_full];
 
-colorfull(:,:,1)=[linspace(1,0,length(x_meshfull(1,:)));linspace(1,255,length(x_meshfull(1,:)))];
-colorfull(:,:,2)=[linspace(0,1,length(x_meshfull(1,:)));linspace(1,255,length(x_meshfull(1,:)))];
-colorfull(:,:,3)=[linspace(0,0,length(x_meshfull(1,:)));linspace(1,255,length(x_meshfull(1,:)))];
+colorfull=meshcolor(length(x_meshfull));
 %%
 figure 
 hold all
