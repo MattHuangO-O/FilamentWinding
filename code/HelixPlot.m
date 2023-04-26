@@ -1,4 +1,4 @@
-alpha = 15; %wind angle (helical wind angle)
+alpha = 88; %wind angle (helical wind angle)
 alpha_r = alpha * pi / 180; %angle in radians
 dia = 8; %diamter of cylinder
 radius = dia/2;
